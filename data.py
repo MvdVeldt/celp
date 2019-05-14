@@ -109,7 +109,7 @@ def reviewedcities(user_id):
     usercities = Counter(usercities)
     return usercities
 
-def findbusiness(business_id)
+def findbusiness(business_id):
     '''
     Given a business_id, find the data of the business
     '''
