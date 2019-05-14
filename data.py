@@ -6,7 +6,7 @@ Do ensure these functions remain functional:
     - get_reviews(city, business_id=None, user_id=None, n=10)
     - get_user(username)
 """
-
+from collections import Counter
 import os
 import json
 import random
@@ -81,6 +81,41 @@ def get_reviews(city, business_id=None, user_id=None, n=10):
     reviews = REVIEWS[city]
     reviews = [review for review in reviews if should_keep(review)]
     return random.sample(reviews, min(n, len(reviews)))
+
+def get_userreviews(user_id):
+    '''
+    Given an user_id, select all the reviews that have the same user_id
+    '''
+    def should_keep2(review):
+        if user_id and review["user_id"] != user_id:
+            return False
+        return True
+    
+    reviews = REVIEWS
+    userreviews = [review for review in reviews if should_keep2(review)]
+    return userreviews
+
+def reviewedcities(user_id):
+    '''
+    Given an user_id, find the cities of the reviewed places by the user
+    '''
+    usercities = ()
+    reviews = get_userreviews(user_id)
+    for review in userreviews:
+        business_id = review["business_id"]
+        result = findbusiness(business_id)
+        city = result["city"]
+        usercities.append(city)
+    usercities = Counter(usercities)
+    return usercities
+
+def findbusiness(business_id)
+    '''
+    Given a business_id, find the data of the business
+    '''
+    for business in BUSINESSES:
+        if business["business_id"] == business_id:
+            return business
 
 
 def get_user(username):
