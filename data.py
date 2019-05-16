@@ -90,7 +90,7 @@ def get_userreviews(user_id):
         if user_id and review["user_id"] != user_id:
             return False
         return True
-    
+
     reviews = REVIEWS
     userreviews = [review for review in reviews if should_keep2(review)]
     return userreviews
@@ -99,7 +99,8 @@ def reviewedcities(user_id):
     '''
     Given an user_id, find the cities of the reviewed places by the user
     '''
-    usercities = ()
+    userreviews = get_userreviews(user_id)
+    usercities = []
     reviews = get_userreviews(user_id)
     for review in userreviews:
         business_id = review["business_id"]
