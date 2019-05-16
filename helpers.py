@@ -1,22 +1,5 @@
-from data import BUSINESSES
+from data import BUSINESSES, get_business
 import ast
-
-
-def get_business(city, business_id):
-    """
-    Given a city name and a business id, return that business's data.
-    Returns a dictionary of the form:
-        {
-            name:str,
-            business_id:str,
-            stars:str,
-            ...
-        }
-    """
-    for business in BUSINESSES[city]:
-        if business["business_id"] == business_id:
-            return business
-    raise IndexError(f"invalid business_id {business_id}")
 
 def get_attributes(city, business_id):
 
@@ -52,3 +35,4 @@ def new_atts(atts):
             copy[j] = i[j]
 
     return copy
+
