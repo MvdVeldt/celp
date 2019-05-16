@@ -1,6 +1,7 @@
 from data import CITIES, BUSINESSES, USERS, REVIEWS, TIPS, CHECKINS
-
+from helpers import get_business, get_attributes, new_atts
 import random
+
 
 def recommend(user_id=None, business_id=None, city=None, n=10):
     """
