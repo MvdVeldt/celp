@@ -1,7 +1,9 @@
-from data import CITIES, BUSINESSES, USERS, REVIEWS, TIPS, CHECKINS
-from helpers import get_business, get_attributes, new_atts
-import random
+from data import CITIES, BUSINESSES, USERS, REVIEWS, TIPS, CHECKINS, get_reviews, get_business
+from helpers import get_attributes, new_atts, get_cities, make_utility_matrix, create_similarity_matrix_categories, sorted_similarity, top_5
 import ast
+import pandas as pd
+import sklearn.metrics.pairwise as pw
+import numpy as np
 
 
 def recommend(user_id=None, business_id=None, city=None, n=10):
@@ -17,6 +19,13 @@ def recommend(user_id=None, business_id=None, city=None, n=10):
             adress:str
         }
     """
+
+    u_matrix = make_utility_matrix(get_cities())
+    s_matrix = create_similarity_matrix_categories(u_matrix)
+
     if not city:
         city = random.choice(CITIES)
-    return random.sample(BUSINESSES[city], n)
+        return random.sample(BUSINESSES[city], n)
+
+    else:
+
