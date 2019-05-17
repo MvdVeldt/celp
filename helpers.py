@@ -72,6 +72,17 @@ def all_revs(cities):
 
     return revs
 
+def b_c_pair(cities):
+
+    b_c_pair = {}
+
+    for i in cities:
+        b = BUSINESSES[i]
+        for j in b:
+            b_c_pair[j['business_id']] = [i]
+
+    return b_c_pair
+
 
 def make_utility_matrix(cities):
 
@@ -102,7 +113,7 @@ def make_utility_matrix(cities):
         a = new_atts(get_attributes(b_c_pair[i][0], i))
         if len(a) > 0:
             for j in a.keys():
-                if a[j] == True or a[j] == 'free' or a[j] == 2:
+                if a[j] == True or a[j] == 'free' or a[j] == 2 or a[j] == 'True':
                     df.loc[i,j] = 1
                 else:
                     df.loc[i,j] = 0
@@ -110,6 +121,7 @@ def make_utility_matrix(cities):
     return df
 
 def create_similarity_matrix_categories(matrix):
+    np.seterr(divide='ignore', invalid='ignore')
     npu = matrix.values
     m1 = npu @ npu.T
     diag = np.diag(m1)
@@ -118,26 +130,19 @@ def create_similarity_matrix_categories(matrix):
     return pd.DataFrame(m3, index = matrix.index, columns = matrix.index)
 
 
-u_matrix = make_utility_matrix(get_cities())
-
-
-s_matrix = create_similarity_matrix_categories(u_matrix)
-
-
-
 def sorted_similarity(s_matrix, business_id):
 
     df = s_matrix.loc[business_id].sort_values(ascending=False)
 
     return df
 
-sorted_s = sorted_similarity(s_matrix, 'DGOWO87MQmA4-2swRLK2DA')
 
-def top_5(df):
 
-    top_5 = df.nlargest(5)
+def top_5(df, n):
+
+    top_5 = df.nlargest(n)
 
     return top_5
 
-print(top_5(sorted_s))
-print(list(top_5(sorted_s).index))
+
+bc = b_c_pair(get_cities())
