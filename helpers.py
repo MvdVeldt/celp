@@ -137,6 +137,6 @@ def top_5(df):
 
     top_5 = df.nlargest(5)
 
-    return top_5
+    return list(top_5(sorted_s).index
 
 print(top_5(sorted_s))
