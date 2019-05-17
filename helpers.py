@@ -124,4 +124,12 @@ u_matrix = make_utility_matrix(get_cities())
 s_matrix = create_similarity_matrix_categories(u_matrix)
 
 
-print(s_matrix)
+
+def sorted_similarity(s_matrix, business_id):
+
+    df = s_matrix.loc[business_id].sort_values(ascending=False)
+
+    return df
+
+sorted_s = sorted_similarity(s_matrix, 'DGOWO87MQmA4-2swRLK2DA')
+print(sorted_s)
