@@ -132,4 +132,11 @@ def sorted_similarity(s_matrix, business_id):
     return df
 
 sorted_s = sorted_similarity(s_matrix, 'DGOWO87MQmA4-2swRLK2DA')
-print(sorted_s)
+
+def top_5(df):
+
+    top_5 = df.nlargest(5)
+
+    return top_5
+
+print(top_5(sorted_s))
