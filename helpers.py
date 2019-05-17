@@ -1,7 +1,8 @@
 from data import CITIES, BUSINESSES, USERS, REVIEWS, TIPS, CHECKINS, get_reviews, get_business
 import ast
 import pandas as pd
-
+import sklearn.metrics.pairwise as pw
+import numpy as np
 
 def get_attributes(city, business_id):
 
@@ -94,6 +95,10 @@ def make_utility_matrix(cities):
     df = pd.DataFrame( columns=all_atts, index=b_c_pair.keys())
 
     for i in df.index:
+        for j in df.columns:
+            df.loc[i,j] = 0
+
+    for i in df.index:
         a = new_atts(get_attributes(b_c_pair[i][0], i))
         if len(a) > 0:
             for j in a.keys():
@@ -104,4 +109,19 @@ def make_utility_matrix(cities):
 
     return df
 
-print(make_utility_matrix(get_cities()))
+def create_similarity_matrix_categories(matrix):
+    npu = matrix.values
+    m1 = npu @ npu.T
+    diag = np.diag(m1)
+    m2 = m1 / diag
+    m3 = np.minimum(m2, m2.T)
+    return pd.DataFrame(m3, index = matrix.index, columns = matrix.index)
+
+
+u_matrix = make_utility_matrix(get_cities())
+
+
+s_matrix = create_similarity_matrix_categories(u_matrix)
+
+
+print(s_matrix)
