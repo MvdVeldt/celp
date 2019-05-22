@@ -1,5 +1,5 @@
 from data import CITIES, BUSINESSES, USERS, REVIEWS, TIPS, CHECKINS, get_reviews, get_business
-from helpers import get_attributes, new_atts, get_cities, b_c_pair, make_utility_matrix, create_similarity_matrix_categories, sorted_similarity, top_5
+from helpers import get_attributes, new_atts, get_cities, b_c_pair, make_utility_matrix, create_similarity_matrix_categories, sorted_similarity, top_5, pivot_ratings, create_similarity_matrix_cosine, predict_ratings, predict_ids, predict_vectors, mse
 import ast
 import pandas as pd
 import sklearn.metrics.pairwise as pw
@@ -44,10 +44,25 @@ def recommend(user_id=None, business_id=None, city=None, n=10):
         some_dict['address'] = some['address']
         a_list.append(some_dict)
 
-
     if a_list == None:
         return random.sample(BUSINESSES[city], n)
     else:
         return a_list
 
-print(recommend(user_id=None, business_id='S9BSFX03TBqAHFF1M4c08g', city='sun city', n=5))
+ree = recommend(user_id=None, business_id='S9BSFX03TBqAHFF1M4c08g', city='sun city', n=5)
+
+wew = []
+0  EXFAB-c4qgqCNfk_T78oxw  EOzsAFr7eF8D4C3a4ZQicw     4.0               0.9
+1  dQJH6y1VcStslYCyYTWJSw  uXCPUES8-cafSN_4oALhOQ     1.0               4.8
+2  -S1dz92Q3RPfHomiqEeP8Q  ARPF656yM6oeEDSCnLhzIg     5.0               2.4
+3  6r4J79yfO4eyItfbSsGP1w  vfsbLhXGiXm8lqI12abrbQ     4.0               1.8
+4  vJ5wrLnxSOPcR8a8jScGkQ
+
+pls = []
+for i in ree:
+    l = ['S9BSFX03TBqAHFF1M4c08g',i['business_id'], i['stars']]
+    pls.append(l)
+
+df = pd.DataFrame(pls, columns=['user_id','business_id','stars'])
+
+print(mse(df))
